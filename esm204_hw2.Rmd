@@ -37,5 +37,7 @@ ventura <- water_districts %>%
 ```{r}
 ggplot(data = kern,
        aes(x = x1, y = mc_kern)) +
-  geom_point()
+  geom_point() +
+  abline()
+  geom_smooth(method = "lm", se = FALSE)
 ```
