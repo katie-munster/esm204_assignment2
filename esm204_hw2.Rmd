@@ -18,6 +18,8 @@ library(here)
 ```{r}
 water_districts <- read_csv("Water_Districts.csv") %>% 
   clean_names()
+
+head(water_districts)
 ```
 
 ```{r}
@@ -41,3 +43,160 @@ ggplot(data = kern,
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
 ```
+
+# Kern
+```{r}
+# plot
+ggplot(water_districts, aes(x=reduction, y=mc_kern)) +
+  geom_point()
+```
+
+```{r}
+# fit a line
+model_kern <- lm(mc_kern ~ 0 + reduction, data = water_districts)
+summary(model_kern)
+```
+
+```{r}
+# get the slope
+b_kern <- model_kern$coefficient[1]
+b_kern
+```
+
+```{r}
+# fit line for Kern. predict by multiplying a vector of abatement number by the slope
+kern_baseline <- 150
+kern_data <- tibble(reduction = 0:150)
+predicted_water_districts <- b_kern*seq(0,150,1)
+kern_data <- kern_data %>% 
+  mutate(predicted_water_districts = predicted_water_districts)
+
+# plot with predicted line
+ggplot(water_districts, aes(x = reduction, y = mc_kern)) +
+  geom_point() +
+  geom_line(data = kern_data, aes(x = reduction, y = predicted_water_districts)) +
+  labs(x = 'Abatement', y = '$/Abatement', title = 'Marginal Cost (Abatement) Curve for Kern')
+```
+
+```{r}
+# demand curve for Kern
+kern_data <- kern_data %>% 
+  mutate(water_demand = kern_baseline - reduction)
+
+ggplot(kern_data, aes(x = water_demand, y = predicted_water_districts)) +
+  geom_point() +
+  geom_line() +
+  labs(x = 'Water demand', y = '$/AF')
+```
+
+# Mojave
+
+```{r}
+model_mojave <- lm(mc_mojave ~ 0 + reduction, data = water_districts)
+summary(model_mojave)
+```
+
+```{r}
+b_mojave <- model_mojave$coefficient[1]
+b_mojave
+```
+
+```{r}
+mojave_baseline <- 140
+mojave_data <- tibble(reduction = 0:140)
+predicted_water_districts <- b_mojave*seq(0,140,1)
+mojave_data <- mojave_data %>% 
+  mutate(predicted_water_districts = predicted_water_districts)
+
+# plot with predicted line
+ggplot(water_districts, aes(x = reduction, y = mc_mojave)) +
+  geom_point() +
+  geom_line(data = mojave_data, aes(x = reduction, y = predicted_water_districts)) +
+  labs(x = 'Abatement', y = '$/Abatement', title = 'Marginal Cost (Abatement) Curve for Mojave')
+```
+
+```{r}
+# demand
+mojave_data <- mojave_data %>% 
+  mutate(water_demand = mojave_baseline - reduction)
+```
+
+# Antelope
+
+```{r}
+model_antelope <- lm(mc_antelope ~ 0 + reduction, data = water_districts)
+summary(model_antelope)
+```
+
+```{r}
+b_antelope <- model_antelope$coefficient[1]
+b_antelope
+```
+
+```{r}
+antelope_baseline <- 220
+antelope_data <- tibble(reduction = 0:220)
+predicted_water_districts <- b_antelope*seq(0,220,1)
+antelope_data <- antelope_data %>% 
+  mutate(predicted_water_districts = predicted_water_districts)
+
+# plot with predicted line
+ggplot(water_districts, aes(x = reduction, y = mc_antelope)) +
+  geom_point() +
+  geom_line(data = antelope_data, aes(x = reduction, y = predicted_water_districts)) +
+  labs(x = 'Abatement', y = '$/Abatement', title = 'Marginal Cost (Abatement) Curve for Antelope')
+```
+
+```{r}
+# demand
+antelope_data <- antelope_data %>% 
+  mutate(water_demand = antelope_baseline - reduction)
+```
+
+# Ventura
+
+```{r}
+model_ventura <- lm(mc_ventura ~ 0 + reduction, data = water_districts)
+summary(model_ventura)
+```
+
+```{r}
+b_ventura <- model_ventura$coefficient[1]
+b_ventura
+```
+
+```{r}
+ventura_baseline <- 245
+ventura_data <- tibble(reduction = 0:245)
+predicted_water_districts <- b_ventura*seq(0,245,1)
+ventura_data <- ventura_data %>% 
+  mutate(predicted_water_districts = predicted_water_districts)
+
+# plot with predicted line
+ggplot(water_districts, aes(x = reduction, y = mc_ventura)) +
+  geom_point() +
+  geom_line(data = ventura_data, aes(x = reduction, y = predicted_water_districts)) +
+  labs(x = 'Abatement', y = '$/Abatement', title = 'Marginal Cost (Abatement) Curve for Ventura')
+```
+
+```{r}
+# demand
+ventura_data <- ventura_data %>% 
+  mutate(water_demand = ventura_baseline - reduction)
+```
+
+
+```{r}
+# join demand curves in one plot
+joined_demand <- bind_rows('Mojave' = mojave_data,
+                           'Kern' = kern_data,
+                           'Antelope' = antelope_data,
+                           'Ventura' = ventura_data,
+                           .id = 'Districts')
+
+ggplot(data = joined_demand, aes(x = water_demand, y = predicted_water_districts, color = Districts)) +
+  geom_line() +
+  labs(x = 'Water Demand', y = '$/AF', title = 'Demand for Water')
+```
+
+
