@@ -199,4 +199,37 @@ ggplot(data = joined_demand, aes(x = water_demand, y = predicted_water_districts
   labs(x = 'Water Demand', y = '$/AF', title = 'Demand for Water')
 ```
 
+# Cap without trade
+
+```{r}
+baseline = c(150, 140, 220, 245)
+
+# math by hand
+# p*150 + p*140 + p*220 + p*245 = 255
+# p = 0.3377483
+
+quantity_abate = 50
+lm_mod = model_kern
+calc_cost <- function(lm_mod, quantity_abate){
+  estimated_cost = lm_mod$coefficients*quantity_abate
+  total_cost = .5 * quantity_abate * estimated_cost
+  return(total_cost[[1]])
+}
+
+# Kern abated .338*150 = 50.7 units
+calc_cost(model_kern, quantity_abate = 50.7)
+# $2,938.55
+
+# Mojave abated .338*140 = 47.32 units
+calc_cost(model_mojave, quantity_abate = 47.32)
+# $4,258.96
+
+# Antelope abated .338*220 = 74.36 units
+calc_cost(model_antelope, quantity_abate = 74.36)
+# $7,900.53
+
+# Ventura abated .338*245 = 82.81 units
+calc_cost(model_ventura, quantity_abate = 82.81)
+# $6,089.61
+```
 
