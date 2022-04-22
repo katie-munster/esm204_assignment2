@@ -233,3 +233,64 @@ calc_cost(model_ventura, quantity_abate = 82.81)
 # $6,089.61
 ```
 
+# Tax on water
+
+```{r}
+# need Q aggregrate:
+# price_kern = b_kern*Q
+# price_mojave = b_mojave*Q
+# price_antelope = b_antelope*Q
+# price_ventura = b_ventura*Q
+# solve for Q
+# Q_kern = price/b_kern
+# 255 = (price/b_kern + price/b_mojave + price/b_antelope + price/b_ventura)
+# 255 = price*(1/b_kern + 1/b_mojave + 1/b_antelope + 1/b_ventura)
+# price = 255/(1/b_kern + 1/b_mojave + 1/b_antelope + 1/b_ventura)
+
+255/(1/b_kern + 1/b_mojave + 1/b_antelope + 1/b_ventura)
+# tax is this price: $158.07
+
+# Kern level of abatement
+# 158.07 = b_kern*Q
+158.07/b_kern
+# 69 units of abatement
+
+# Mojave cost of abatement
+# 158.07 = b_mojave*Q
+158.07/b_mojave
+# 41 units of abatement
+
+# Antelope cost of abatement
+# 158.07 = b_antelope*Q
+158.07/b_antelope
+# 55 units of abatement
+
+# Ventura cost of abatement
+# 158.07 = b_ventura*Q
+158.07/b_ventura
+# 89 units of abatement
+
+# Kern cost
+.5 * 158.07 * 69
+# $5,453.42
+
+# Mojave cost
+.5 * 158.07 * 41
+# $3,240.44
+
+# Antelope cost
+.5 * 158.07 * 55
+# $4,346.93
+
+# Ventura cost
+.5 * 158.07 * 89
+# $7,034.12
+
+# total cost to abatement is area under Qagg curve
+.5*255*158.07
+# $20,153.92
+
+```
+
+
+
