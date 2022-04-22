@@ -37,7 +37,6 @@ ventura <- water_districts %>%
 ```
 
 ```{r}
-
 ggplot(data = kern,
        aes(x = x1, y = mc_kern)) +
   geom_point() +
@@ -72,10 +71,17 @@ kern_data <- kern_data %>%
   mutate(predicted_water_districts = predicted_water_districts)
 
 # plot with predicted line
-ggplot(water_districts, aes(x = reduction, y = mc_kern)) +
+ggplot(water_districts, 
+       aes(x = reduction, y = mc_kern)) +
   geom_point() +
-  geom_line(data = kern_data, aes(x = reduction, y = predicted_water_districts)) +
-  labs(x = 'Abatement', y = '$/Abatement', title = 'Marginal Cost (Abatement) Curve for Kern')
+  geom_line(data = kern_data, 
+            aes(x = reduction, y = predicted_water_districts), 
+            color = "red", 
+            size = 1) +
+  labs(x = 'Abatement', 
+       y = '$/Abatement', 
+       title = 'Marginal Cost (Abatement) Curve for Kern') +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ```{r}
@@ -109,10 +115,17 @@ mojave_data <- mojave_data %>%
   mutate(predicted_water_districts = predicted_water_districts)
 
 # plot with predicted line
-ggplot(water_districts, aes(x = reduction, y = mc_mojave)) +
+ggplot(water_districts, 
+       aes(x = reduction, y = mc_mojave)) +
   geom_point() +
-  geom_line(data = mojave_data, aes(x = reduction, y = predicted_water_districts)) +
-  labs(x = 'Abatement', y = '$/Abatement', title = 'Marginal Cost (Abatement) Curve for Mojave')
+  geom_line(data = mojave_data, 
+            aes(x = reduction, y = predicted_water_districts),
+            color = "red", 
+            size = 1) +
+  labs(x = 'Abatement', 
+       y = '$/Abatement', 
+       title = 'Marginal Cost (Abatement) Curve for Mojave') +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ```{r}
@@ -141,10 +154,17 @@ antelope_data <- antelope_data %>%
   mutate(predicted_water_districts = predicted_water_districts)
 
 # plot with predicted line
-ggplot(water_districts, aes(x = reduction, y = mc_antelope)) +
+ggplot(water_districts, 
+       aes(x = reduction, y = mc_antelope)) +
   geom_point() +
-  geom_line(data = antelope_data, aes(x = reduction, y = predicted_water_districts)) +
-  labs(x = 'Abatement', y = '$/Abatement', title = 'Marginal Cost (Abatement) Curve for Antelope')
+  geom_line(data = antelope_data, 
+            aes(x = reduction, y = predicted_water_districts),
+            color = "red",
+            size = 1) +
+  labs(x = 'Abatement', 
+       y = '$/Abatement', 
+       title = 'Marginal Cost (Abatement) Curve for Antelope') +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ```{r}
@@ -173,10 +193,17 @@ ventura_data <- ventura_data %>%
   mutate(predicted_water_districts = predicted_water_districts)
 
 # plot with predicted line
-ggplot(water_districts, aes(x = reduction, y = mc_ventura)) +
+ggplot(water_districts, 
+       aes(x = reduction, y = mc_ventura)) +
   geom_point() +
-  geom_line(data = ventura_data, aes(x = reduction, y = predicted_water_districts)) +
-  labs(x = 'Abatement', y = '$/Abatement', title = 'Marginal Cost (Abatement) Curve for Ventura')
+  geom_line(data = ventura_data, 
+            aes(x = reduction, y = predicted_water_districts),
+            color = "red",
+            size = 1) +
+  labs(x = 'Abatement', 
+       y = '$/Abatement', 
+       title = 'Marginal Cost (Abatement) Curve for Ventura') +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ```{r}
@@ -194,9 +221,13 @@ joined_demand <- bind_rows('Mojave' = mojave_data,
                            'Ventura' = ventura_data,
                            .id = 'Districts')
 
-ggplot(data = joined_demand, aes(x = water_demand, y = predicted_water_districts, color = Districts)) +
+ggplot(data = joined_demand, 
+       aes(x = water_demand, y = predicted_water_districts, color = Districts)) +
   geom_line() +
-  labs(x = 'Water Demand', y = '$/AF', title = 'Demand for Water')
+  labs(x = 'Water Demand', 
+       y = '$/AF', 
+       title = 'Demand for Water') +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 # Cap without trade
